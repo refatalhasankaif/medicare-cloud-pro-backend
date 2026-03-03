@@ -1,3 +1,4 @@
+import { UserStatus } from "../../../generated/prisma/enums";
 import { auth } from "../../lib/auth";
 
 
@@ -29,7 +30,29 @@ const registerPatient = async (payload: IRegisterPatientPayload) => {
     return data
 }
 
+const loginUser = async (payload: IRegisterPatientPayload) => {
+    const {email, password} = payload
+
+    const data = await auth.api.signInEmail({
+        body: {
+            email,
+            password
+        }
+    })
+
+    if(data.user.status === UserStatus.SUSPENDED){
+        throw new Error("User is suspended")
+    }
+
+    if(data.user.isDeleted){
+        throw new Error("User is deleted")
+    }
+
+    return data
+}
+
 export const authService = {
     registerPatient,
+    loginUser
 
 }
