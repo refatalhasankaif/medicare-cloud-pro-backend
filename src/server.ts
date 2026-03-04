@@ -1,12 +1,10 @@
 import app from "./app";
-
-const port = process.env.PORT;
-
+import { envVars } from "./config/env";
 
 const bootstrap = () => {
     try {
-        app.listen(5000, () => {
-            console.log(`Server is tunning on http://localhost:5000`)
+        app.listen(envVars.PORT, () => {
+            console.log(`Server is tunning on ${envVars.PORT}`)
         })
     } catch (error) {
         console.error('Failed to start server', error)
