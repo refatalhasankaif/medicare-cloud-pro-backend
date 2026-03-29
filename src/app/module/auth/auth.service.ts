@@ -39,11 +39,33 @@ const registerPatient = async (payload: IRegisterPatientPayload) => {
 
             return patientTx;
         })
+        const accessToken = tokenUtils.getAccessToken({
+            userId: data.user.id,
+            role: data.user.role,
+            name: data.user.name,
+            email: data.user.email,
+            status: data.user.status,
+            isDelete: data.user.isDeleted,
+            emailVerfied: data.user.emailVerified
+        });
+
+        const refreshToken = tokenUtils.getRefreshToken({
+            userId: data.user.id,
+            role: data.user.role,
+            name: data.user.name,
+            email: data.user.email,
+            status: data.user.status,
+            isDelete: data.user.isDeleted,
+            emailVerfied: data.user.emailVerified
+        });
 
         return {
             ...data,
-            patient
+            accessToken,
+            refreshToken,
+            patient,
         }
+
     } catch (error) {
         console.log("Transaction error: ", error);
         await prisma.user.delete({

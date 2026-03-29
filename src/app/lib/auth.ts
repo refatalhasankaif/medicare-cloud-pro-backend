@@ -2,12 +2,12 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
 import { Role, UserStatus } from "../../generated/prisma/enums";
-import ms from "ms";
 import { envVars } from "../../config/env";
 
+import ms, { StringValue } from "ms";
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
-        provider: "postgresql", // or "mysql", "postgresql", ...etc
+        provider: "postgresql",
     }),
     emailAndPassword: {
         enabled: true,
@@ -44,11 +44,11 @@ export const auth = betterAuth({
     },
 
     session: {
-        expiresIn: Number(ms(Number(envVars.BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN))),
-        updateAge: Number(ms(Number(envVars.BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE))),
+        expiresIn: Number(ms(envVars.BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN as StringValue)),
+        updateAge: Number(ms(envVars.BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE as StringValue)),
         cookieCache: {
             enabled: true,
-            maxAge: Number(ms(Number(envVars.BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN)))
+            maxAge: Number(ms(envVars.BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN as StringValue)),
         }
     }
 });
