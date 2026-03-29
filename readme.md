@@ -40,6 +40,8 @@ Key capabilities include multi-role access control (Super Admin, Admin, Doctor, 
 
 ## 🗂️ Flow Diagram
 
+👉 [Click to view Flow Diagram Image](https://i.ibb.co.com/spSYzR7w/Screenshot-From-2026-03-29-13-33-09.png)
+
 ![Flow Diagram](https://i.ibb.co.com/spSYzR7w/Screenshot-From-2026-03-29-13-33-09.png)
 
 ---
@@ -47,6 +49,8 @@ Key capabilities include multi-role access control (Super Admin, Admin, Doctor, 
 ## 🗂️ Entity Relationship Diagram
 
 👉 [View Full ERD on Google Drive](https://drive.google.com/file/d/106yNznGtmcH3-AD-2dC3wYOO_a7Yn4no/view?usp=sharing)
+
+👉 [Click to view ERD Diagram Image](https://i.ibb.co.com/h1WmDHBr/PH-Healthcare-Backend-ERD-drawio.png)
 
 ![ERD Diagram](https://i.ibb.co.com/h1WmDHBr/PH-Healthcare-Backend-ERD-drawio.png)
 
@@ -92,15 +96,5 @@ Key capabilities include multi-role access control (Super Admin, Admin, Doctor, 
 | Admin | Manage doctors, patients, view reports |
 | Doctor | Manage appointments, write prescriptions, view patient data |
 | Patient | Book appointments, view prescriptions, upload medical reports |
-
----
-
-## 🔄 Appointment Lifecycle
-
-```
-Patient Login → Browse Doctors → Book Appointment → Payment
-→ Video Consultation with Doctor → Prescription Issued
-→ Session Ends → Patient Submits Review
-```
 
 ---
