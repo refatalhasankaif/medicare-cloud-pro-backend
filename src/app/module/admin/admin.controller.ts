@@ -2,62 +2,62 @@ import { catchAsync } from "../../shared/catchAsync";
 import { Request, Response } from "express";
 import { sendResponce } from "../../shared/sendResponce";
 import status from "http-status";
-import { doctorService } from "./doctor.service";
+import { adminService } from "./admin.service";
 
-const getAllDoctors = catchAsync(
+const getAllAdmins = catchAsync(
     async (req: Request, res: Response) => {
-        const result = await doctorService.getAllDoctors();
+        const result = await adminService.getAllAdmins();
         sendResponce(res, {
             httpStatuscode: status.OK,
             success: true,
-            message: "Doctors retrieved successfully",
+            message: "Admins retrieved successfully",
             data: result
         })
     }
 )
 
-const getDoctorById = catchAsync(
-    async (req: Request, res: Response) => {
-        const { id } = req.params as { id: string };
-        const result = await doctorService.getDoctorById(id);
-        sendResponce(res, {
-            httpStatuscode: status.OK,
-            success: true,
-            message: "Doctor retrieved successfully",
-            data: result
-        })
-    }
-)
-
-const updateDoctor = catchAsync(
+const getAdminById = catchAsync(
     async (req: Request, res: Response) => {
         const { id } = req.params as { id: string };
-        const result = await doctorService.updateDoctor(id, req.body);
+        const result = await adminService.getAdminById(id);
         sendResponce(res, {
             httpStatuscode: status.OK,
             success: true,
-            message: "Doctor updated successfully",
+            message: "Admin retrieved successfully",
             data: result
         })
     }
 )
 
-const softDeleteDoctor = catchAsync(
+const updateAdmin = catchAsync(
     async (req: Request, res: Response) => {
         const { id } = req.params as { id: string };
-        const result = await doctorService.softDeleteDoctor(id);
+        const result = await adminService.updateAdmin(id, req.body);
         sendResponce(res, {
             httpStatuscode: status.OK,
             success: true,
-            message: "Doctor deleted successfully",
+            message: "Admin updated successfully",
             data: result
         })
     }
 )
 
-export const doctorController = {
-    getAllDoctors,
-    getDoctorById,
-    updateDoctor,
-    softDeleteDoctor,
+const softDeleteAdmin = catchAsync(
+    async (req: Request, res: Response) => {
+        const { id } = req.params as { id: string };
+        const result = await adminService.softDeleteAdmin(id);
+        sendResponce(res, {
+            httpStatuscode: status.OK,
+            success: true,
+            message: "Admin deleted successfully",
+            data: result
+        })
+    }
+)
+
+export const adminController = {
+    getAllAdmins,
+    getAdminById,
+    updateAdmin,
+    softDeleteAdmin,
 }

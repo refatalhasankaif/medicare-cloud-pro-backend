@@ -61,6 +61,12 @@ export const checkAuth = (...authRoles: Role[]) => async (req: Request, res: Res
                 if (authRoles.length > 0 && !authRoles.includes(verifiedToken?.data!.role as Role)) {
                     throw new AppError(status.FORBIDDEN, 'Forbidden: Insufficient permissions to access this resource')
                 }
+
+                req.user = {
+                    userId: user.id,
+                    role: user.role,
+                    email: user.email,
+                }
             }
         }
 
@@ -75,6 +81,7 @@ export const checkAuth = (...authRoles: Role[]) => async (req: Request, res: Res
         if (authRoles.length > 0 && !authRoles.includes(verifiedToken.data!.role as Role)) {
             throw new AppError(status.FORBIDDEN, 'Forbidden: Insufficient permissions to access this resource')
         }
+
 
         next()
     }

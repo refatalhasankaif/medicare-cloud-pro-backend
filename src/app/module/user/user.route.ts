@@ -1,29 +1,21 @@
 import { Router  } from "express";
 import { userController } from "./user.controller";
 import { validateRequest } from "../../middleware/validateRequest";
-import { createDoctorZodSchema } from "./user.validation";
+import { createDoctorZodSchema, createAdminZodSchema } from "./user.validation";
+import { checkAuth } from "../../middleware/checkAuth";
+import { Role } from "../../../generated/prisma/client";
 
 const router = Router();
 
 router.post("/create-doctor",
-
-    // (req: Request, res: Response, next: NextFunction) => {
-    //     console.log(req.body)
-
-    //     const parseResult = createDoctorZodSchema.safeParse(req.body);
-    //     if (!parseResult.success) {
-    //         next(parseResult.error);
-    //     }
-    //     req.body = parseResult.data;
-    //     next();
-    // },
-
     validateRequest(createDoctorZodSchema),
+    userController.createDoctor
+)
 
-    userController.createDoctor)
-
-
-// router.post("/create-admin", userController.createAdmin)
-// router.post("/create-superadmin", userController.createSuperAdmin)
+router.post("/create-admin",
+    checkAuth(Role.SUPER_ADMIN),
+    validateRequest(createAdminZodSchema),
+    userController.createAdmin
+)
 
 export const userRoutes = router;

@@ -58,8 +58,22 @@ const loginUser = catchAsync(
         })
     }
 )
+
+const getMe = catchAsync(
+    async (req: Request, res: Response) => {
+        const user = req.user
+        
+        const data = await authService.getMe(user)
+        sendResponce(res, {
+            httpStatuscode: status.OK,
+            success: true,
+            message: "User data fetched successfully",
+            data
+        })
+    }
+)
 export const AuthController = {
     registerPatient,
     loginUser,
-
+    getMe
 }
