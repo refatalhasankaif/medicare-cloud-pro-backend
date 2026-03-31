@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { tokenUtils } from "../../utils/token";
 import { authService } from "./auth.service";
 import AppError from "../../errorHelpers/AppError";
+import { cookieUtils } from "../../utils/cookie";
 
 const registerPatient = catchAsync(
     async (req: Request, res: Response) => {
@@ -106,10 +107,65 @@ const getNewToken = catchAsync(
     }
 )
 
+const changePassword = catchAsync(
+    async (req: Request, res: Response) => {
+        const payload = req.body
+        const betterAuthSessionToken = req.cookies['better-auth.session.session_token']
+        
+        const result = await authService.changePassword(payload, betterAuthSessionToken)
+        
+        const { accessToken, refreshToken, token } = result
+        
+        tokenUtils.setAccessTokenCookie(res, accessToken)
+        tokenUtils.setRefreshTokenCookie(res, refreshToken)
+        tokenUtils.setBetterAuthSessionCookie(res, token as string)
+        
+        sendResponce(res, {
+            httpStatuscode: status.OK,
+            success: true,
+            message: "Password changed successfully",
+            data: result
+        })
+    }
+)
+
+const logOutUser = catchAsync(async (req: Request, res: Response) => {
+    const betterAuthSessionToken = req.cookies['better-auth.session.session_token']
+    const result = await authService.logoutUser(betterAuthSessionToken)
+
+    cookieUtils.clearCookie(res, 'accessToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+    })
+
+    cookieUtils.clearCookie(res, 'refreshToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+    })
+
+    cookieUtils.clearCookie(res, 'better-auth.session.session_token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+    })
+
+    sendResponce(res, {
+        httpStatuscode: status.OK,
+        success: true,
+        message: "User logged out successfully",
+        data: result
+    })
+
+})
 
 export const AuthController = {
     registerPatient,
     loginUser,
     getMe,
     getNewToken,
+    changePassword,
+    logOutUser,
+    
 }
